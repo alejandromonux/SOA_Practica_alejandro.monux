@@ -24,3 +24,24 @@ int readFileTypeExt(int fd){
     return 0;
   }
 }
+
+
+/**
+*Function to read EXT2 volume inode size
+*
+*parameters:
+* ·fd = File descriptor of file
+*
+*
+*returns:
+*  inode size
+*
+**/
+int readInodeSizeTypeExt(int fd){
+  unsigned short aux;
+
+  lseek(fd, EXT2_OFFSET+88, SEEK_SET);
+  read(fd, &aux, 2);
+
+  return aux;
+}
