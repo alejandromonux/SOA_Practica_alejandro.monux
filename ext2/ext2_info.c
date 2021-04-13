@@ -107,3 +107,23 @@ int readInodeCount(int fd){
 
   return aux;
 }
+
+/**
+*Function to read EXT2 free inode count
+*
+*parameters:
+* ·fd = File descriptor of file
+*
+*
+*returns:
+*  free inode count
+*
+**/
+int readFreeInodes(int fd){
+  unsigned int aux;
+
+  lseek(fd, EXT2_OFFSET+16, SEEK_SET);
+  read(fd, &aux, 4);
+
+  return aux;
+}
