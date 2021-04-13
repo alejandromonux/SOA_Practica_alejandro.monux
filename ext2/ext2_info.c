@@ -37,11 +37,31 @@ int readFileTypeExt(int fd){
 *  inode size
 *
 **/
-int readInodeSizeTypeExt(int fd){
+int readInodeSizeExt(int fd){
   unsigned short aux;
 
   lseek(fd, EXT2_OFFSET+88, SEEK_SET);
   read(fd, &aux, 2);
+
+  return aux;
+}
+
+/**
+*Function to read EXT2 first inode
+*
+*parameters:
+* ·fd = File descriptor of file
+*
+*
+*returns:
+*  first inode
+*
+**/
+int readFirstInodeExt(int fd){
+  unsigned int aux;
+
+  lseek(fd, EXT2_OFFSET+84, SEEK_SET);
+  read(fd, &aux, 4);
 
   return aux;
 }

@@ -18,6 +18,7 @@
 
 //READ INFO
 int readFileTypeExt(int fd);
-int readInodeSizeTypeExt(int fd);
+int readInodeSizeExt(int fd);
+int readFirstInodeExt(int fd);
 
 #endif
