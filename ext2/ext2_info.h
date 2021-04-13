@@ -16,12 +16,16 @@
 #define EXT2_ID 61267
 #define EXT2_OFFSET 1024
 
-//READ INFO
+/* FILETYPE */
 int readFileTypeExt(int fd);
+/* INODE INFO */
 int readInodeSizeExt(int fd);
 int readFirstInodeExt(int fd);
 int readInodeGroups(int fd);
 int readInodeCount(int fd);
 int readFreeInodes(int fd);
+/* BLOCK INFO */
+unsigned int readBlockSize(int fd);
+int readReservedBlocks(int fd);
 
 #endif

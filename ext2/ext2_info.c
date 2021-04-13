@@ -1,5 +1,6 @@
 #include "./ext2_info.h"
 
+/* FILETYPE */
 
 /**
 *Function to determine if FS is Ext2 or not
@@ -25,6 +26,7 @@ int readFileTypeExt(int fd){
   }
 }
 
+/* INODE INFO */
 
 /**
 *Function to read EXT2 volume inode size
@@ -79,7 +81,7 @@ int readFirstInodeExt(int fd){
 *
 **/
 int readInodeGroups(int fd){
-  unsigned int aux;
+  int aux;
 
   lseek(fd, EXT2_OFFSET+40, SEEK_SET);
   read(fd, &aux, 4);
@@ -100,7 +102,7 @@ int readInodeGroups(int fd){
 *
 **/
 int readInodeCount(int fd){
-  unsigned int aux;
+  int aux;
 
   lseek(fd, EXT2_OFFSET+0, SEEK_SET);
   read(fd, &aux, 4);
@@ -120,9 +122,51 @@ int readInodeCount(int fd){
 *
 **/
 int readFreeInodes(int fd){
-  unsigned int aux;
+  int aux;
 
   lseek(fd, EXT2_OFFSET+16, SEEK_SET);
+  read(fd, &aux, 4);
+
+  return aux;
+}
+
+/* BLOCK INFO */
+
+/**
+*Function to read EXT2 Block Size
+*
+*parameters:
+* ·fd = File descriptor of file
+*
+*
+*returns:
+*  Block Size
+*
+**/
+unsigned int readBlockSize(int fd){
+  unsigned int aux;
+
+  lseek(fd, EXT2_OFFSET+24, SEEK_SET);
+  read(fd, &aux, 4);
+
+  return 1024 << aux ;
+}
+
+/**
+*Function to read EXT2 number of reserved blocks.
+*
+*parameters:
+* ·fd = File descriptor of file.
+*
+*
+*returns:
+* number of reserved blocks.
+*
+**/
+int readReservedBlocks(int fd){
+  unsigned int aux;
+
+  lseek(fd, EXT2_OFFSET+8, SEEK_SET);
   read(fd, &aux, 4);
 
   return aux;
