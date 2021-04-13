@@ -29,6 +29,8 @@ unsigned int readBlockSize(int fd);
 int readReservedBlocks(int fd);
 int readFreeBlocks(int fd);
 int readTotalBlocks(int fd);
-
+int readBlocksGroup(int fd);
+int readFragsGroup(int fd);
+int readFirstBlock(int fd);
 
 #endif

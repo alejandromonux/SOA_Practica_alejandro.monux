@@ -211,3 +211,64 @@ int readTotalBlocks(int fd){
 
   return aux;
 }
+
+/**
+*Function to read EXT2 blocks per group.
+*
+*parameters:
+* ·fd = File descriptor of file.
+*
+*
+*returns:
+* blocks per group.
+*
+**/
+int readBlocksGroup(int fd){
+  unsigned int aux;
+
+  lseek(fd, EXT2_OFFSET+32, SEEK_SET);
+  read(fd, &aux, 4);
+
+  return aux;
+}
+
+/**
+*Function to read EXT2 fragments per group.
+*
+*parameters:
+* ·fd = File descriptor of file.
+*
+*
+*returns:
+* fragments per group.
+*
+**/
+int readFragsGroup(int fd){
+  unsigned int aux;
+
+  lseek(fd, EXT2_OFFSET+36, SEEK_SET);
+  read(fd, &aux, 4);
+
+  return aux;
+}
+
+
+/**
+*Function to read EXT2 ID of first data block.
+*
+*parameters:
+* ·fd = File descriptor of file.
+*
+*
+*returns:
+* ID of first data block.
+*
+**/
+int readFirstBlock(int fd){
+  unsigned int aux;
+
+  lseek(fd, EXT2_OFFSET+20, SEEK_SET);
+  read(fd, &aux, 4);
+
+  return aux;
+}
