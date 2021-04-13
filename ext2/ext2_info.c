@@ -171,3 +171,43 @@ int readReservedBlocks(int fd){
 
   return aux;
 }
+
+/**
+*Function to read EXT2 number of free blocks.
+*
+*parameters:
+* ·fd = File descriptor of file.
+*
+*
+*returns:
+* number of free blocks.
+*
+**/
+int readFreeBlocks(int fd){
+  unsigned int aux;
+
+  lseek(fd, EXT2_OFFSET+12, SEEK_SET);
+  read(fd, &aux, 4);
+
+  return aux;
+}
+
+/**
+*Function to read EXT2 number of free blocks.
+*
+*parameters:
+* ·fd = File descriptor of file.
+*
+*
+*returns:
+* number of free blocks.
+*
+**/
+int readTotalBlocks(int fd){
+  unsigned int aux;
+
+  lseek(fd, EXT2_OFFSET+4, SEEK_SET);
+  read(fd, &aux, 4);
+
+  return aux;
+}

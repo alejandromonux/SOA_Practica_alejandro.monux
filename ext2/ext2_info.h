@@ -27,5 +27,8 @@ int readFreeInodes(int fd);
 /* BLOCK INFO */
 unsigned int readBlockSize(int fd);
 int readReservedBlocks(int fd);
+int readFreeBlocks(int fd);
+int readTotalBlocks(int fd);
+
 
 #endif
