@@ -20,5 +20,7 @@
 int readFileTypeExt(int fd);
 int readInodeSizeExt(int fd);
 int readFirstInodeExt(int fd);
+int readInodeGroups(int fd);
+int readInodeCount(int fd);
 
 #endif

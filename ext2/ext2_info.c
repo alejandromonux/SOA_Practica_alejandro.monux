@@ -65,3 +65,45 @@ int readFirstInodeExt(int fd){
 
   return aux;
 }
+
+
+/**
+*Function to read EXT2 inodes group
+*
+*parameters:
+* ·fd = File descriptor of file
+*
+*
+*returns:
+*  inodes group
+*
+**/
+int readInodeGroups(int fd){
+  unsigned int aux;
+
+  lseek(fd, EXT2_OFFSET+40, SEEK_SET);
+  read(fd, &aux, 4);
+
+  return aux;
+}
+
+
+/**
+*Function to read EXT2 inode count
+*
+*parameters:
+* ·fd = File descriptor of file
+*
+*
+*returns:
+*  inode count
+*
+**/
+int readInodeCount(int fd){
+  unsigned int aux;
+
+  lseek(fd, EXT2_OFFSET+0, SEEK_SET);
+  read(fd, &aux, 4);
+
+  return aux;
+}
