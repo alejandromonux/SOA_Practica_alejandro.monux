@@ -272,3 +272,45 @@ int readFirstBlock(int fd){
 
   return aux;
 }
+
+/*  VOLUME INFO */
+
+/**
+*Function to read EXT2 Volume name
+*
+*parameters:
+* ·fd = File descriptor of file.
+*
+*
+*returns:
+* Volume name
+*
+**/
+char * readBlockName(int fd, char* container){
+
+
+  lseek(fd, EXT2_OFFSET+120, SEEK_SET);
+  read(fd, &container, 16);
+
+  return container;
+}
+
+
+/**
+*Function to read EXT2 Last Time Mounted
+*
+*parameters:
+* ·fd = File descriptor of file.
+*
+*
+*returns:
+* Last Time Mounted
+*
+**/
+char * readLastMounted(int fd, char* container){
+
+  lseek(fd, EXT2_OFFSET+136, SEEK_SET);
+  read(fd, container, 64);
+
+  return container;
+}

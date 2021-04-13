@@ -32,5 +32,7 @@ int readTotalBlocks(int fd);
 int readBlocksGroup(int fd);
 int readFragsGroup(int fd);
 int readFirstBlock(int fd);
-
+/*  VOLUME INFO */
+char * readBlockName(int fd, char* container);
+char * readLastMounted(int fd, char* container);
 #endif
