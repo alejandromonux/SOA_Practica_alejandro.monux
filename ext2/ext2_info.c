@@ -308,9 +308,11 @@ char * readBlockName(int fd, char* container){
 *
 **/
 char * readLastMounted(int fd, char* container){
+  int aux;
+  lseek(fd, EXT2_OFFSET+44, SEEK_SET);
+  read(fd, &aux, 4);
 
-  lseek(fd, EXT2_OFFSET+136, SEEK_SET);
-  read(fd, container, 64);
+  container = timestampToText(aux, container);
 
   return container;
 }
