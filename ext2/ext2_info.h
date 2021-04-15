@@ -25,6 +25,7 @@ int readFragsGroup(int fd);
 int readFirstBlock(int fd);
 /*  VOLUME INFO */
 char * readBlockName(int fd, char* container);
-
 char * readLastMounted(int fd, char* container);
+char * readLastWritten(int fd, char* container);
+char * readLastCheck(int fd, char* container);
 #endif

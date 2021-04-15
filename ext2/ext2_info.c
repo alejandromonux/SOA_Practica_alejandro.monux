@@ -316,3 +316,46 @@ char * readLastMounted(int fd, char* container){
 
   return container;
 }
+
+
+/**
+*Function to read EXT2 Last Time Written
+*
+*parameters:
+* ·fd = File descriptor of file.
+*
+*
+*returns:
+* Last Time Written
+*
+**/
+char * readLastWritten(int fd, char* container){
+  int aux;
+  lseek(fd, EXT2_OFFSET+48, SEEK_SET);
+  read(fd, &aux, 4);
+
+  container = timestampToText(aux, container);
+
+  return container;
+}
+
+/**
+*Function to read EXT2 Last Time Checked
+*
+*parameters:
+* ·fd = File descriptor of file.
+*
+*
+*returns:
+* Last Time Checked
+*
+**/
+char * readLastCheck(int fd, char* container){
+  int aux;
+  lseek(fd, EXT2_OFFSET+64, SEEK_SET);
+  read(fd, &aux, 4);
+
+  container = timestampToText(aux, container);
+
+  return container;
+}
