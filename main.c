@@ -2,26 +2,28 @@
 
 int printExtInfo(int fd){
   char name[16];
-  char lastMounted[64];
+  char lastMounted[256];
   printf("INFO INODE\n");
-  printf("INODE SIZE      -> %d\n",       readInodeSizeExt(fd));
-  printf("NUM   INODES    -> %d\n",       readInodeCount(fd));
-  printf("FIRST INODE     -> %d\n",       readFirstInodeExt(fd));
-  printf("INODE GROUPS    -> %d\n",       readInodeGroups(fd));
-  printf("INODES LLIURES  -> %d\n\n",     readFreeInodes(fd));
+  printf("Mida Inode:     %d\n",       readInodeSizeExt(fd));
+  printf("Num Inodes:     %d\n",       readInodeCount(fd));
+  printf("Primer Inode:   %d\n",       readFirstInodeExt(fd));
+  printf("Inodes Grup:    %d\n",       readInodeGroups(fd));
+  printf("Inodes Lliures: %d\n\n",     readFreeInodes(fd));
 
   printf("INFO BLOC\n");
-  printf("MIDA BLOC       -> %u\n", readBlockSize(fd));
-  printf("BLOCS RESERVATS -> %d\n", readReservedBlocks(fd));
-  printf("BLOCS LLIURES   -> %d\n", readFreeBlocks(fd));
-  printf("BLOCS TOTALS    -> %d\n", readTotalBlocks(fd));
-  printf("PRIMER BLOC     -> %d\n", readFirstBlock(fd));
-  printf("BLOCS GRUP      -> %d\n", readBlocksGroup(fd));
-  printf("FRAGS GRUP      -> %d\n\n", readFragsGroup(fd));
+  printf("Mida Bloc:        %u\n",    readBlockSize(fd));
+  printf("Blocs Reservats:  %d\n",    readReservedBlocks(fd));
+  printf("Blocs Lliures:    %d\n",    readFreeBlocks(fd));
+  printf("Total Blocs:      %d\n",    readTotalBlocks(fd));
+  printf("Primer Bloc:      %d\n",    readFirstBlock(fd));
+  printf("Blocs Grup:       %d\n",    readBlocksGroup(fd));
+  printf("Frags Grup:       %d\n\n",  readFragsGroup(fd));
 
   printf("INFO VOLUM\n");
-  printf("NOM VOLUM       -> %s\n", readBlockName(fd, name));
-  printf("ULTIM MUNTATGE    -> %s\n", readLastMounted(fd, lastMounted));
+  printf("Nom volum:            %s\n", readBlockName(fd, name));
+  printf("Ultima Comprov:     %s\n", readLastWritten(fd, lastMounted));
+  printf("Ultim Muntatge:     %s\n", readLastMounted(fd, lastMounted));
+  printf("Ultima Escriptura:  %s\n", readLastWritten(fd, lastMounted));
 
   return 0;
 }
