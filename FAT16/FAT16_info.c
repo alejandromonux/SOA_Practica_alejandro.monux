@@ -158,3 +158,20 @@ char readNumOfFAT(int fd){
 
   return aux;
 }
+
+/*
+* Reads Root Entries
+*
+* Parameters:
+*   · fd: file descriptor from which to read
+*
+* Returns:
+*   · short of Num FATs
+*/
+short readMaxRootEnt(int fd){
+  short aux;
+  lseek(fd, 17, SEEK_SET);
+  read(fd, &aux, 2);
+
+  return aux;
+}
