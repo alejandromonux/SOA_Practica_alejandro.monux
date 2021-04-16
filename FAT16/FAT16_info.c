@@ -85,7 +85,7 @@ char isItFAT16(int fd){
 * Returns:
 *   ·11 char array of Volume Label
 */
-char * readVolumeName(int fd, char * name){
+char * readVolumeLabel(int fd, char * name){
   lseek(fd, 43, SEEK_SET);
   read(fd, name, 11);
 
