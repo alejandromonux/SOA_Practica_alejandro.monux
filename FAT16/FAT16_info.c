@@ -77,6 +77,22 @@ char isItFAT16(int fd){
 }
 
 /*
+* Reads Volume Name
+*
+* Parameters:
+*   · fd: file descriptor from which to read
+*
+* Returns:
+*   ·8 char array of Volume Name
+*/
+char * readVolumeName(int fd, char * name){
+  lseek(fd, 3, SEEK_SET);
+  read(fd, name, 8);
+
+  return name;
+}
+
+/*
 * Reads Volume Label
 *
 * Parameters:
