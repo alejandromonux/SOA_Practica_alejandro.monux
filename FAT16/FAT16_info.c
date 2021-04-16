@@ -1,5 +1,6 @@
 #include "FAT16_info.h"
 
+
 /*
 * Checks if the volume is FAT16
 *
@@ -73,4 +74,45 @@ char isItFAT16(int fd){
    /* Volume es FAT32 */
    return 0;
   }
+}
+
+/*
+* Reads Volume Label
+*
+* Parameters:
+*   · fd: file descriptor from which to read
+*
+* Returns:
+*   ·11 char array of Volume Label
+*/
+char * readVolumeName(int fd, char * name){
+  lseek(fd, 43, SEEK_SET);
+  read(fd, name, 11);
+
+  return name;
+}
+
+/*
+* Reads sectors per cluster
+*
+* Parameters:
+*   · fd: file descriptor from which to read
+*
+* Returns:
+*   · char of sectors per cluster
+*/
+char readSectorsPerCluster(int fd){
+  char aux;
+  lseek(fd, 13, SEEK_SET);
+  read(fd, &aux, 1);
+
+  return aux;
+}
+
+short readReservedSectors(int fd){
+  short aux;
+  lseek(fd, 14, SEEK_SET);
+  read(fd, &aux, 2);
+
+  return aux;
 }

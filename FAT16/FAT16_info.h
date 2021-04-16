@@ -5,5 +5,9 @@
 
 /*VERIFICACIO*/
 char isItFAT16(int fd);
+/*INFO DEL VOLUM*/
+char * readVolumeName(int fd, char * name);
+char readSectorsPerCluster(int fd);
+short readReservedSectors(int fd);
 
 #endif
