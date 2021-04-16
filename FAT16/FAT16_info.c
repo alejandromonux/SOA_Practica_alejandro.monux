@@ -109,10 +109,36 @@ char readSectorsPerCluster(int fd){
   return aux;
 }
 
+/*
+* Reads reserved sectors
+*
+* Parameters:
+*   · fd: file descriptor from which to read
+*
+* Returns:
+*   · char of reserved sectors
+*/
 short readReservedSectors(int fd){
   short aux;
   lseek(fd, 14, SEEK_SET);
   read(fd, &aux, 2);
+
+  return aux;
+}
+
+/*
+* Reads Num FATs
+*
+* Parameters:
+*   · fd: file descriptor from which to read
+*
+* Returns:
+*   · char of Num FATs
+*/
+char readNumOfFAT(int fd){
+  char aux;
+  lseek(fd, 16, SEEK_SET);
+  read(fd, &aux, 1);
 
   return aux;
 }
