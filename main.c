@@ -1,4 +1,5 @@
 #include "./ext2/ext2_info.h"
+#include "./FAT16/FAT16_info.h"
 
 int printExtInfo(int fd){
   char name[16];
@@ -28,24 +29,46 @@ int printExtInfo(int fd){
   return 0;
 }
 
+int printFAT16Info(int fd){
+  char name[11];
+  char VolName[8];
+  //char lastMounted[256];
+  printf("System Name:         %s\n", readVolumeName(fd, VolName));
+  printf("Mida del Sector:     %u\n", readBytesPerSector(fd));
+  printf("Sectors Per Cluster: %u\n", readSectorsPerCluster(fd));
+  printf("Sectors Reservats:   %u\n", readReservedSectors(fd));
+  printf("Numero de FATs:      %u\n", readNumOfFAT(fd));
+  printf("MaxRootEntries:      %u\n", readMaxRootEnt(fd));
+  printf("Sectors per FAT:     %u\n", readSectorsPerFat(fd));
+  printf("Label:               %s\n", readVolumeLabel(fd, name));
+
+
+  return 0;
+}
+
 int main(int argc, char const *argv[]) {
 
   if (argc < 3){
     printf("Not enough arguments provided. Current amount of arguments is: %d", argc);
     return 0;
   }
+  if (strcmp(argv[1],"/info") == 0  ){
+      int fd = open(argv[2], 'r');
 
-  int fd = open(argv[2], 'r');
-
-  printf("FILESYSTEM: ");
-  if(readFileTypeExt(fd) == 1){
-    printf("EXT2\n\n");
-    printExtInfo(fd);
+      if(readFileTypeExt(fd) == 1){
+        printf("FILESYSTEM: EXT2\n\n");
+        printExtInfo(fd);
+      }else{
+        if(isItFAT16(fd)){
+            printf("FILESYSTEM: FAT16\n\n");
+            printFAT16Info(fd);
+        }else{
+          printf("El sistema no es ni EXT2 ni FAT16\n");
+        }
+      }
+    return 0;
   }else{
-    printf("Sam no va tambien la verdá\n");
+      printf("No mode selected\n");
+      return 0;
   }
-
-
-
-  return 0;
 }
