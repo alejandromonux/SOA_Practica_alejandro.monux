@@ -2,7 +2,7 @@
 #define FAT16_INFO
 
 #include "../tools/utils.h"
-
+#include <math.h>
 /*VERIFICACIO*/
 char isItFAT16(int fd);
 /*INFO DEL VOLUM*/
@@ -13,4 +13,5 @@ short readReservedSectors(int fd);
 char readNumOfFAT(int fd);
 short readMaxRootEnt(int fd);
 short readBytesPerSector(int fd);
+short readSectorsPerFat(int fd);
 #endif

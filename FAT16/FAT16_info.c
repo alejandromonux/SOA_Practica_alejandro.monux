@@ -166,7 +166,7 @@ char readNumOfFAT(int fd){
 *   · fd: file descriptor from which to read
 *
 * Returns:
-*   · short of Num FATs
+*   · short of Root Entries
 */
 short readMaxRootEnt(int fd){
   short aux;
@@ -192,4 +192,27 @@ short readBytesPerSector(int fd){
   read(fd, &aux, 2);
 
   return aux;
+}
+
+
+/*
+* Reads Sectors per FAT
+*
+* Parameters:
+*   · fd: file descriptor from which to read
+*
+* Returns:
+*   · short of Sectors per FAT
+*/
+short readSectorsPerFat(int fd){
+  short aux, out;
+  char fats;
+  //Obtenim BPB_NumFATs
+  lseek(fd, 16, SEEK_SET);
+  read(fd, &fats, 1);
+  //Obtenim BPB_TotSec16
+  lseek(fd, 19, SEEK_SET);
+  read(fd, &aux, 2);
+  out = round(aux/fats);
+  return out;
 }
