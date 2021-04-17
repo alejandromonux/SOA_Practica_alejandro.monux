@@ -175,3 +175,21 @@ short readMaxRootEnt(int fd){
 
   return aux;
 }
+
+/*
+* Reads Bytes Per Sector
+*
+* Parameters:
+*   · fd: file descriptor from which to read
+*
+* Returns:
+*   · short of Bytes Per Sector
+*/
+short readBytesPerSector(int fd){
+  short aux;
+  //Obtenim BPB_BytsPerSec
+  lseek(fd, 11, SEEK_SET);
+  read(fd, &aux, 2);
+
+  return aux;
+}

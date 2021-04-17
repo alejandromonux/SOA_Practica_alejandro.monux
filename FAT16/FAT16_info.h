@@ -12,5 +12,5 @@ char readSectorsPerCluster(int fd);
 short readReservedSectors(int fd);
 char readNumOfFAT(int fd);
 short readMaxRootEnt(int fd);
-
+short readBytesPerSector(int fd);
 #endif
