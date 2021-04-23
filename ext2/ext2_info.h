@@ -25,6 +25,10 @@ int readBlocksGroup(int fd);
 int readFragsGroup(int fd);
 int readFirstBlock(int fd);
 int* read_i_block(int fd, int offset, int * out);
+/* DIRECTORY INFO */
+char * llegirNomArxiu(int fd, int offset, char * out);
+short read_rec_len(int fd, int offset);
+int llegirFileSize(int fd, int offset);
 /*  VOLUME INFO */
 char * readBlockName(int fd, char* container);
 char * readLastMounted(int fd, char* container);

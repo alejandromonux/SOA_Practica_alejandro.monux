@@ -316,6 +316,90 @@ int* read_i_block(int fd, int offset, int * out){
 
   return out;
 }
+
+
+/* DIRECTORY INFO */
+
+/**
+*Function to read CURRENT Directory entry rec_len.
+*
+*parameters:
+* ·fd = File descriptor of file.
+* · offset = offset from which to write
+* · out = char * to output
+*
+*returns:
+* name.
+*
+**/
+short read_rec_len(int fd, int offset){
+  unsigned short aux;
+
+  lseek(fd, offset+4, SEEK_SET);
+  read(fd, &aux, 2);
+
+
+  return aux;
+}
+
+
+/**
+*Function to read CURRENT file/Directory name.
+*
+*parameters:
+* ·fd = File descriptor of file.
+* · offset = offset from which to write
+* · out = char * to output
+*
+*returns:
+* name.
+*
+**/
+char * llegirNomArxiu(int fd, int offset, char * out){
+  unsigned char aux;
+
+  lseek(fd, offset+6, SEEK_SET);
+  read(fd, &aux, 1);
+  lseek(fd, offset+8, SEEK_SET);
+  for (int i = 0; i < aux; i++) {
+    char aux2;
+    read(fd, &aux2, 1);
+    out[i] = aux2;
+  }
+
+
+  return out;
+}
+
+
+
+/**
+*Function to read CURRENT file size.
+*
+*parameters:
+* · fd = File descriptor of file.
+* · offset = offset from which to write
+*
+*
+*returns:
+* name.
+*
+**/
+int llegirFileSize(int fd, int offset){
+  unsigned int aux;
+
+  //Llegim el inode on pertany
+  lseek(fd, offset, SEEK_SET);
+  read(fd, &aux, 4);
+
+  //Anem al inode
+  lseek(fd, 2048 + (readBG_INODE_TABLE_Ext(fd) - 2)*readBlockSize(fd) + (aux-1)*readInodeSizeExt(fd) + 4, SEEK_SET);
+  read(fd, &aux, 4);
+
+
+  return aux;
+}
+
 /*  VOLUME INFO */
 
 /**
