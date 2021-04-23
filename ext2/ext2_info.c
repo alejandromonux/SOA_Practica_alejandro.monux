@@ -273,6 +273,29 @@ int readFirstBlock(int fd){
   return aux;
 }
 
+
+/**
+*Function to read EXT2 i_block of designated inode table.
+*
+*parameters:
+* ·fd = File descriptor of file.
+*
+*
+*returns:
+* ID of first data block.
+*
+**/
+int* read_i_block(int fd, int offset, int * out){
+  unsigned int aux;
+
+  lseek(fd, offset+40, SEEK_SET);
+  for (int i = 0; i < 15; i++) {
+    read(fd, &aux, 4);
+    out[i] = aux;
+  }
+
+  return out;
+}
 /*  VOLUME INFO */
 
 /**
