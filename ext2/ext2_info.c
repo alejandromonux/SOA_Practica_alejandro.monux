@@ -29,6 +29,26 @@ int readFileTypeExt(int fd){
 /* INODE INFO */
 
 /**
+*Function to read EXT2 bg_inode_table
+*
+*parameters:
+* ·fd = File descriptor of file
+*
+*
+*returns:
+*  bg_inode_table
+*
+**/
+int readBG_INODE_TABLE_Ext(int fd){
+  int aux;
+
+  lseek(fd, EXT2_OFFSET*2+8, SEEK_SET);
+  read(fd, &aux, 4);
+
+  return aux;
+}
+
+/**
 *Function to read EXT2 volume inode size
 *
 *parameters:

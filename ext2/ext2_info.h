@@ -10,6 +10,7 @@
 /* FILETYPE */
 int readFileTypeExt(int fd);
 /* INODE INFO */
+int readBG_INODE_TABLE_Ext(int fd);
 int readInodeSizeExt(int fd);
 int readFirstInodeExt(int fd);
 int readInodeGroups(int fd);
