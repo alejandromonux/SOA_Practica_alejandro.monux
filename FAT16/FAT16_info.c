@@ -234,3 +234,21 @@ short readFATSz16(int fd){
 
   return aux;
 }
+
+/*
+* Reads Root cluster
+*
+* Parameters:
+*   · fd: file descriptor from which to read
+*
+* Returns:
+*   · short of Root cluster
+*/
+int readRootCluster(int fd){
+  int aux;
+  //Obtenim BPB_BytsPerSec
+  lseek(fd, 44, SEEK_SET);
+  read(fd, &aux, 4);
+
+  return aux;
+}
