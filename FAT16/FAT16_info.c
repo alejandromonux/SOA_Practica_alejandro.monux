@@ -252,3 +252,21 @@ int readRootCluster(int fd){
 
   return aux;
 }
+
+/*
+* Reads filesize
+*
+* Parameters:
+*   · fd: file descriptor from which to read
+*
+* Returns:
+*   · int of filesize
+*/
+int readFilesize(int fd, int offset){
+  int aux;
+  //Obtenim BPB_BytsPerSec
+  lseek(fd, offset+28, SEEK_SET);
+  read(fd, &aux, 4);
+
+  return aux;
+}

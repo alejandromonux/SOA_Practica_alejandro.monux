@@ -16,4 +16,5 @@ short readBytesPerSector(int fd);
 short readSectorsPerFat(int fd);
 short readFATSz16(int fd);
 int readRootCluster(int fd);
+int readFilesize(int fd, int offset);
 #endif
