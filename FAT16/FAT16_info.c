@@ -332,3 +332,21 @@ short readRootEntries(int fd){
 
   return aux;
 }
+
+/*
+* Reads file type
+*
+* Parameters:
+*   · fd: file descriptor from which to read
+*
+* Returns:
+*   · char of file type
+*/
+char readFileType(int fd, int offset){
+  char aux;
+  //Obtenim BPB_BytsPerSec
+  lseek(fd, offset+11, SEEK_SET);
+  read(fd, &aux, 1);
+
+  return aux;
+}
