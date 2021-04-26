@@ -216,3 +216,21 @@ short readSectorsPerFat(int fd){
   out = round(aux/fats);
   return out;
 }
+
+/*
+* Reads FATSz16
+*
+* Parameters:
+*   · fd: file descriptor from which to read
+*
+* Returns:
+*   · short of FATSz16
+*/
+short readFATSz16(int fd){
+  short aux;
+  //Obtenim BPB_BytsPerSec
+  lseek(fd, 22, SEEK_SET);
+  read(fd, &aux, 2);
+
+  return aux;
+}

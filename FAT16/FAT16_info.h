@@ -14,4 +14,5 @@ char readNumOfFAT(int fd);
 short readMaxRootEnt(int fd);
 short readBytesPerSector(int fd);
 short readSectorsPerFat(int fd);
+short readFATSz16(int fd);
 #endif
