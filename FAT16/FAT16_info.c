@@ -313,3 +313,22 @@ char * readfilenameFAT(int fd, int offset, char * out){
 
   return out;
 }
+
+
+/*
+* Reads root entries
+*
+* Parameters:
+*   · fd: file descriptor from which to read
+*
+* Returns:
+*   · short of root entries
+*/
+short readRootEntries(int fd){
+  short aux;
+  //Obtenim BPB_BytsPerSec
+  lseek(fd, 17, SEEK_SET);
+  read(fd, &aux, 2);
+
+  return aux;
+}
