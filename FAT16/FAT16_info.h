@@ -17,4 +17,5 @@ short readSectorsPerFat(int fd);
 short readFATSz16(int fd);
 int readRootCluster(int fd);
 int readFilesize(int fd, int offset);
+char * readfilenameFAT(int fd, int offset, char * out);
 #endif
