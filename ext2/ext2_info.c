@@ -29,6 +29,26 @@ int readFileTypeExt(int fd){
 /* INODE INFO */
 
 /**
+*Function to read EXT2 bg_inode_table
+*
+*parameters:
+* ·fd = File descriptor of file
+*
+*
+*returns:
+*  bg_inode_table
+*
+**/
+int readBG_INODE_TABLE_Ext(int fd){
+  int aux;
+
+  lseek(fd, EXT2_OFFSET*2+8, SEEK_SET);
+  read(fd, &aux, 4);
+
+  return aux;
+}
+
+/**
 *Function to read EXT2 volume inode size
 *
 *parameters:
@@ -269,6 +289,113 @@ int readFirstBlock(int fd){
 
   lseek(fd, EXT2_OFFSET+20, SEEK_SET);
   read(fd, &aux, 4);
+
+  return aux;
+}
+
+
+/**
+*Function to read EXT2 i_block of designated inode table.
+*
+*parameters:
+* ·fd = File descriptor of file.
+*
+*
+*returns:
+* ID of first data block.
+*
+**/
+int* read_i_block(int fd, int offset, int * out){
+  unsigned int aux;
+
+  lseek(fd, offset+40, SEEK_SET);
+  for (int i = 0; i < 15; i++) {
+    read(fd, &aux, 4);
+    out[i] = aux;
+  }
+
+  return out;
+}
+
+
+/* DIRECTORY INFO */
+
+/**
+*Function to read CURRENT Directory entry rec_len.
+*
+*parameters:
+* ·fd = File descriptor of file.
+* · offset = offset from which to write
+* · out = char * to output
+*
+*returns:
+* name.
+*
+**/
+short read_rec_len(int fd, int offset){
+  unsigned short aux;
+
+  lseek(fd, offset+4, SEEK_SET);
+  read(fd, &aux, 2);
+
+
+  return aux;
+}
+
+
+/**
+*Function to read CURRENT file/Directory name.
+*
+*parameters:
+* ·fd = File descriptor of file.
+* · offset = offset from which to write
+* · out = char * to output
+*
+*returns:
+* name.
+*
+**/
+char * llegirNomArxiu(int fd, int offset, char * out){
+  unsigned char aux;
+
+  lseek(fd, offset+6, SEEK_SET);
+  read(fd, &aux, 1);
+  lseek(fd, offset+8, SEEK_SET);
+  for (int i = 0; i < aux; i++) {
+    char aux2;
+    read(fd, &aux2, 1);
+    out[i] = aux2;
+  }
+
+
+  return out;
+}
+
+
+
+/**
+*Function to read CURRENT file size.
+*
+*parameters:
+* · fd = File descriptor of file.
+* · offset = offset from which to write
+*
+*
+*returns:
+* name.
+*
+**/
+int llegirFileSize(int fd, int offset){
+  unsigned int aux;
+
+  //Llegim el inode on pertany
+  lseek(fd, offset, SEEK_SET);
+  read(fd, &aux, 4);
+
+  //Anem al inode
+  lseek(fd, 2048 + (readBG_INODE_TABLE_Ext(fd) - 2)*readBlockSize(fd) + (aux-1)*readInodeSizeExt(fd) + 4, SEEK_SET);
+  read(fd, &aux, 4);
+
 
   return aux;
 }
