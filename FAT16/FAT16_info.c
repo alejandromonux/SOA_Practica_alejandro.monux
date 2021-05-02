@@ -216,3 +216,137 @@ short readSectorsPerFat(int fd){
   out = round(aux/fats);
   return out;
 }
+
+/*
+* Reads FATSz16
+*
+* Parameters:
+*   · fd: file descriptor from which to read
+*
+* Returns:
+*   · short of FATSz16
+*/
+short readFATSz16(int fd){
+  short aux;
+  //Obtenim BPB_BytsPerSec
+  lseek(fd, 22, SEEK_SET);
+  read(fd, &aux, 2);
+
+  return aux;
+}
+
+/*
+* Reads Root cluster
+*
+* Parameters:
+*   · fd: file descriptor from which to read
+*
+* Returns:
+*   · short of Root cluster
+*/
+int readRootCluster(int fd){
+  int aux;
+  //Obtenim BPB_BytsPerSec
+  lseek(fd, 44, SEEK_SET);
+  read(fd, &aux, 4);
+
+  return aux;
+}
+
+/*
+* Reads filesize
+*
+* Parameters:
+*   · fd: file descriptor from which to read
+*
+* Returns:
+*   · int of filesize
+*/
+int readFilesize(int fd, int offset){
+  int aux;
+  //Obtenim BPB_BytsPerSec
+  lseek(fd, offset+28, SEEK_SET);
+  read(fd, &aux, 4);
+
+  return aux;
+}
+
+/*
+* Reads filename
+*
+* Parameters:
+*   · fd: file descriptor from which to read
+*
+* Returns:
+*   · char * of filename
+*/
+char * readfilenameFAT(int fd, int offset, char * out){
+  char aux;
+  char espacio = 0;
+  int index = 0;
+
+  lseek(fd, offset, SEEK_SET);
+  for (int i = 0; i < 11; i++) {
+    read(fd, &aux, 1);
+    if((aux == 32)||(aux == 0)){
+      if (espacio == 0) {
+        espacio = 1;
+        if (out[index-1] == 'h') {
+          char temp = out[index-1];
+          out[index-1] = '.';
+          out[index] = temp;
+        }else{
+          out[index] = '.';
+          index++;
+        }
+      }
+    }else{
+      //printf("%c -- %d\n", aux, aux);
+      if ((aux >= 65) && (aux <= 90)){
+        out[index] = (aux+32);
+      }else{
+        out[index] = aux;
+      }
+      index++;
+    }
+  }
+
+  return out;
+}
+
+
+/*
+* Reads root entries
+*
+* Parameters:
+*   · fd: file descriptor from which to read
+*
+* Returns:
+*   · short of root entries
+*/
+short readRootEntries(int fd){
+  short aux;
+  //Obtenim BPB_BytsPerSec
+  lseek(fd, 17, SEEK_SET);
+  read(fd, &aux, 2);
+
+  return aux;
+}
+
+/*
+* Reads file type
+*
+* Parameters:
+*   · fd: file descriptor from which to read
+*
+* Returns:
+*   · char of file type
+*/
+char readFileType(int fd, int offset){
+  char aux;
+  //Obtenim BPB_BytsPerSec
+  lseek(fd, offset+11, SEEK_SET);
+  read(fd, &aux, 1);
+
+  return aux;
+}

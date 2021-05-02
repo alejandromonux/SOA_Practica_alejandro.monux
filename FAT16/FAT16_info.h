@@ -14,4 +14,10 @@ char readNumOfFAT(int fd);
 short readMaxRootEnt(int fd);
 short readBytesPerSector(int fd);
 short readSectorsPerFat(int fd);
+short readFATSz16(int fd);
+int readRootCluster(int fd);
+int readFilesize(int fd, int offset);
+char * readfilenameFAT(int fd, int offset, char * out);
+short readRootEntries(int fd);
+char readFileType(int fd, int offset);
 #endif
