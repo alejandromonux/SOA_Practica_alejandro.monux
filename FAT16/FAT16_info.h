@@ -20,4 +20,6 @@ int readFilesize(int fd, int offset);
 char * readfilenameFAT(int fd, int offset, char * out);
 short readRootEntries(int fd);
 char readFileType(int fd, int offset);
+char readDirAttr(int fd, int offset);
+short readDirCluster(int fd, int offset);
 #endif
