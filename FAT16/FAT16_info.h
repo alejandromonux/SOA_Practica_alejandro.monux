@@ -3,6 +3,17 @@
 
 #include "../tools/utils.h"
 #include <math.h>
+
+typedef struct _LongFileName
+{
+   char sequenceNo;
+   char fileName_Part1[10];
+   char fileattribute;
+   char reserved_1;
+   char checksum;
+   char fileName_Part2[12];
+   char fileName_Part3[4];
+}LFN;
 /*VERIFICACIO*/
 char isItFAT16(int fd);
 /*INFO DEL VOLUM*/
