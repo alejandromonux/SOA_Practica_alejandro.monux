@@ -29,6 +29,8 @@ int* read_i_block(int fd, int offset, int * out);
 char * llegirNomArxiu(int fd, int offset, char * out);
 short read_rec_len(int fd, int offset);
 int llegirFileSize(int fd, int offset);
+char llegirFileType(int fd, int offset);
+int llegirInode(int fd, int offset);
 /*  VOLUME INFO */
 char * readBlockName(int fd, char* container);
 char * readLastMounted(int fd, char* container);

@@ -150,6 +150,8 @@ int readFreeInodes(int fd){
   return aux;
 }
 
+
+
 /* BLOCK INFO */
 
 /**
@@ -293,7 +295,6 @@ int readFirstBlock(int fd){
   return aux;
 }
 
-
 /**
 *Function to read EXT2 i_block of designated inode table.
 *
@@ -309,6 +310,7 @@ int* read_i_block(int fd, int offset, int * out){
   unsigned int aux;
 
   lseek(fd, offset+40, SEEK_SET);
+  //read(fd, &aux, 4);
   for (int i = 0; i < 15; i++) {
     read(fd, &aux, 4);
     out[i] = aux;
@@ -316,7 +318,6 @@ int* read_i_block(int fd, int offset, int * out){
 
   return out;
 }
-
 
 /* DIRECTORY INFO */
 
@@ -367,7 +368,6 @@ char * llegirNomArxiu(int fd, int offset, char * out){
     out[i] = aux2;
   }
 
-
   return out;
 }
 
@@ -392,12 +392,71 @@ int llegirFileSize(int fd, int offset){
   lseek(fd, offset, SEEK_SET);
   read(fd, &aux, 4);
 
-  //Anem al inode
+  //Anem al inode table
   lseek(fd, 2048 + (readBG_INODE_TABLE_Ext(fd) - 2)*readBlockSize(fd) + (aux-1)*readInodeSizeExt(fd) + 4, SEEK_SET);
   read(fd, &aux, 4);
 
 
   return aux;
+}
+
+/**
+*Function to read EXT2 current file filetype
+*
+*parameters:
+* ·fd = File descriptor of file
+*
+*
+*returns:
+*  char of filetype
+*
+**/
+char llegirFileType(int fd, int offset){
+  char aux;
+
+  //Llegim el tipus on pertany
+  lseek(fd, offset+7, SEEK_SET);
+  read(fd, &aux, 1);
+
+  return aux;
+}
+
+/**
+*Function to read EXT2 current file inode location
+*
+*parameters:
+* ·fd = File descriptor of file
+*
+*
+*returns:
+*  unsigned int of inode adress
+*
+*
+*/
+int llegirInode(int fd, int offset){
+  int aux;
+
+  //Llegim el inode on pertany
+  lseek(fd, offset, SEEK_SET);
+  read(fd, &aux, 4);
+	//Operar per mirar a quin grup es (Dividir entre inodes per grup)
+	//Anar al inodeTable del grup
+  int grup = (aux-1)/readInodeGroups(fd);
+  if(grup == 0){
+    aux=1024 + (readBG_INODE_TABLE_Ext(fd) - 1)*readBlockSize(fd) + (aux-1)*readInodeSizeExt(fd);
+  }else{
+    //Mirar de restar-li a aux el num de block * size de block per que si block es 1024 i aux es 1028 doncs que aux passi a ser 4 :3
+    aux -= grup*readInodeGroups(fd);
+    aux=1024 + (readBG_INODE_TABLE_Ext(fd) - 1)*readBlockSize(fd) + (aux-1)*readInodeSizeExt(fd) +  grup*(readBlockSize(fd)*readBlocksGroup(fd));
+  }
+
+  int i_block[15];
+  int offset_Al_Inode_Table = aux;
+  read_i_block(fd, offset_Al_Inode_Table, i_block);
+  grup = (i_block[0] -1)/readBlocksGroup(fd);
+  int block = (i_block[0] -1) - (grup*readBlocksGroup(fd));
+  int directory_offset = 1024 + grup*readBlockSize(fd)*readBlocksGroup(fd) + block*readBlockSize(fd);
+  return directory_offset;
 }
 
 /*  VOLUME INFO */
