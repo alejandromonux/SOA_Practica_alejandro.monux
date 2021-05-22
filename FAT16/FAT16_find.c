@@ -53,8 +53,8 @@ int trobarArxiuFAT(int fd, const char *nomArxiu, int dirCluster, char delete){
         if (readFileType(fd, counter) == (16*2) /* 16*2=0x20*/) {
           if(strcmp(nombre, nomArxiu) == 0){
             if (delete) {
-              printf("HE DE BORRAR EL ARXIU\n");
               borrarArxiuFat(fd, counter, entryActual);
+              printf("El fitxer %s ha estat eliminat.\n", nombre);
             }else{
               printf("Fitxer trobat. Ocupa %d bytes\n", filesize);
             }
