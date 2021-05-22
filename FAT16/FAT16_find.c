@@ -1,7 +1,8 @@
 #include "FAT16_find.h"
 
-int trobarArxiuFAT(int fd, const char *nomArxiu, int dirCluster){
+int trobarArxiuFAT(int fd, const char *nomArxiu, int dirCluster, char delete){
   int firstRootDirSecNum = readReservedSectors(fd) + (readNumOfFAT(fd) * readFATSz16(fd));
+  //int rootCluster = readRootCluster(fd);
   int BytesPerCluster = readBytesPerSector(fd)*readSectorsPerCluster(fd);
   int offsetRootDir = firstRootDirSecNum*readBytesPerSector(fd);
   int counter;
@@ -21,6 +22,7 @@ int trobarArxiuFAT(int fd, const char *nomArxiu, int dirCluster){
     int filesize;
     memset(nombre, '\0', 200);
     readfilenameFAT(fd, counter, nombre);
+
     if(nombre[0] == 0){
       counter+=32;
       continue;
@@ -36,7 +38,7 @@ int trobarArxiuFAT(int fd, const char *nomArxiu, int dirCluster){
         if (readFileType(fd, counter) == 16 /*16=0x10*/) {
           short dirClus = readDirCluster(fd, counter);
           if ((strcmp(nombre, "..") != 0)&&(strcmp(nombre, "...") != 0)&&(strcmp(nombre,"lost+found") != 0)) {
-            if (trobarArxiuFAT(fd, nomArxiu, dirClus)) {
+            if (trobarArxiuFAT(fd, nomArxiu, dirClus, delete)) {
               return 1;
             }
           }
@@ -50,7 +52,12 @@ int trobarArxiuFAT(int fd, const char *nomArxiu, int dirCluster){
       default:
         if (readFileType(fd, counter) == (16*2) /* 16*2=0x20*/) {
           if(strcmp(nombre, nomArxiu) == 0){
-            printf("Fitxer trobat. Ocupa %d bytes\n", filesize);
+            if (delete) {
+              printf("HE DE BORRAR EL ARXIU\n");
+              borrarArxiuFat(fd, counter, entryActual);
+            }else{
+              printf("Fitxer trobat. Ocupa %d bytes\n", filesize);
+            }
             return 1;
           }
         }
