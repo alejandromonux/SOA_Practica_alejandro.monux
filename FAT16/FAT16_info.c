@@ -205,16 +205,11 @@ return aux;
 *   · short of Sectors per FAT
 */
 short readSectorsPerFat(int fd){
-short aux, out;
-char fats;
-//Obtenim BPB_NumFATs
-lseek(fd, 16, SEEK_SET);
-read(fd, &fats, 1);
+short aux;
 //Obtenim BPB_TotSec16
 lseek(fd, 19, SEEK_SET);
 read(fd, &aux, 2);
-out = round(aux/fats);
-return out;
+return aux;
 }
 
 /*
