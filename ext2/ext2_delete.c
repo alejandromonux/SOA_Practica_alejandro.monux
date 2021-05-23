@@ -31,12 +31,10 @@ void borrarArxiuExt(int fd, int counter, int directory_offset, int inodeTableOff
     read(fd, &entrada, 8);
     free(entrada.name);
     entrada.name = (char *) malloc(sizeof(char)*entrada.name_len);
-    //padding = (char *) malloc(sizeof(char) * (entrada.rec_len - (8 + entrada.name_len)));
     padding = (char *) malloc(sizeof(char) * (rec_len_aux - (8 + entrada.name_len)));
 
     memset(entrada.name, '\0', entrada.name_len);
     read(fd, entrada.name, entrada.name_len);
-    //read(fd,padding,entrada.rec_len - (8 + entrada.name_len));
     read(fd,padding,rec_len_aux - (8 + entrada.name_len));
 
 
@@ -51,14 +49,9 @@ void borrarArxiuExt(int fd, int counter, int directory_offset, int inodeTableOff
     write(fd, &entrada.name_len, 1);
     write(fd, &entrada.file_type, 1);
     write(fd, entrada.name, sizeof(char) * entrada.name_len);
-    //write(fd, padding, entrada.rec_len - (8 + entrada.name_len));
     write(fd, padding, rec_len_aux - (8 + entrada.name_len));
 
-    //if (rec_len_aux < entrada.rec_len) {
     diff_rec_len = (entrada.rec_len-rec_len_aux);
-    printf("DIFF REC LENS: %d\n", diff_rec_len);
-      //counter += (entrada.rec_len-rec_len_aux);
-    //}
 
     rec_len_aux = entrada.rec_len;
     counter += rec_len_aux;
@@ -74,7 +67,6 @@ void borrarArxiuExt(int fd, int counter, int directory_offset, int inodeTableOff
 
   //Desactivar el inode en cuestión.
   char * inodeBitmap = (char*) malloc(readBlockSize(fd));
-  //lseek(fd, bitmapOffset+inode, SEEK_SET);
   lseek(fd, bitmapOffset, SEEK_SET);
   read(fd, inodeBitmap, readBlockSize(fd));
 
@@ -88,10 +80,10 @@ void borrarArxiuExt(int fd, int counter, int directory_offset, int inodeTableOff
   if(grup != 0){
     inode -= grup*readInodeGroups(fd);
   }
-  //Posem a 0 el bit
+  //Canviem a 0 el bit del bitmap del inode
   *inodeBitmap &= ~(1 << inode);
 
-  //lseek(fd, bitmapOffset+inode, SEEK_SET);
+
   lseek(fd, bitmapOffset, SEEK_SET);
   write(fd, inodeBitmap, readBlockSize(fd));
   free(inodeBitmap);

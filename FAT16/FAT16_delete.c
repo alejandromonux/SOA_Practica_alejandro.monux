@@ -9,6 +9,5 @@ void borrarArxiuFat(int fd, int offset, int entryActual){
     read(fd, &entrada, 32);
     lseek(fd, offset-32, SEEK_SET);
     write(fd, &entrada, 32);
-    printf("NOMBRE: %s\n", entrada.nom);
   }
 }
