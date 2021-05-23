@@ -450,13 +450,15 @@ int llegirInode(int fd, int offset){
     aux=1024 + (readBG_INODE_TABLE_Ext(fd) - 1)*readBlockSize(fd) + (aux-1)*readInodeSizeExt(fd) +  grup*(readBlockSize(fd)*readBlocksGroup(fd));
   }
 
-  int i_block[15];
   int offset_Al_Inode_Table = aux;
-  read_i_block(fd, offset_Al_Inode_Table, i_block);
+  /*
+  int i_block[15];
+  read_i_block(fd, offset, i_block);
   grup = (i_block[0] -1)/readBlocksGroup(fd);
   int block = (i_block[0] -1) - (grup*readBlocksGroup(fd));
   int directory_offset = 1024 + grup*readBlockSize(fd)*readBlocksGroup(fd) + block*readBlockSize(fd);
-  return directory_offset;
+  return directory_offset;*/
+  return offset_Al_Inode_Table;
 }
 
 /*  VOLUME INFO */
