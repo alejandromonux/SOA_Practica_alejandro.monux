@@ -21,9 +21,19 @@ int main(int argc, char const *argv[]) {
     if(strcmp("/info", argv[1]) == 0){
       printExtInfo(fd);
     }else if (strcmp("/find", argv[1]) == 0) {
+      if (argc < 4){
+        printf("No hi ha suficients arguments. El nombre actual d'arguments es: %d", argc);
+        return 0;
+      }
       trobarArxiuExt(fd, argv[3],0,0);
     }else if (strcmp("/delete", argv[1]) == 0){
+      if (argc < 4){
+        printf("No hi ha suficients arguments. El nombre actual d'arguments es: %d", argc);
+        return 0;
+      }
       trobarArxiuExt(fd, argv[3],0,1);
+    }else{
+        printf("Operació no suportada.");
     }
   }else{
     if(isItFAT16(fd)){
@@ -31,9 +41,19 @@ int main(int argc, char const *argv[]) {
         if(strcmp("/info", argv[1]) == 0){
           printFAT16Info(fd);
         }else if (strcmp("/find", argv[1]) == 0) {
+          if (argc < 4){
+            printf("No hi ha suficients arguments. El nombre actual d'arguments es: %d", argc);
+            return 0;
+          }
           trobarArxiuFAT(fd, argv[3],0,0);
         }else if (strcmp("/delete", argv[1]) == 0){
+          if (argc < 4){
+            printf("No hi ha suficients arguments. El nombre actual d'arguments es: %d", argc);
+            return 0;
+          }
           trobarArxiuFAT(fd, argv[3],0,1);
+        }else{
+          printf("Operació no suportada.");
         }
 
     }else{
