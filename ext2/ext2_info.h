@@ -7,6 +7,7 @@
 #define EXT2_ID 61267
 #define EXT2_OFFSET 1024
 
+int printExtInfo(int fd);
 /* FILETYPE */
 int readFileTypeExt(int fd);
 /* INODE INFO */

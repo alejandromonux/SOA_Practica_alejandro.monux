@@ -14,6 +14,9 @@ typedef struct _LongFileName
    char fileName_Part2[12];
    char fileName_Part3[4];
 }LFN;
+
+
+int printFAT16Info(int fd);
 /*VERIFICACIO*/
 char isItFAT16(int fd);
 /*INFO DEL VOLUM*/
