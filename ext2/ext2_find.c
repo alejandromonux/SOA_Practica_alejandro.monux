@@ -1,10 +1,11 @@
 #include "./ext2_find.h"
 
-int trobarArxiuExt(int fd, const char *nomArxiu, unsigned int offset){
+int trobarArxiuExt(int fd, const char *nomArxiu, unsigned int offset, char delete){
   int saltsFins1erInode = readInodeSizeExt(fd)*(readFirstInodeExt(fd)-1);
   int i_block[15];
   int counter;
   int trobat = 0;
+
   //Anar al primer inode (Inode 11).
   int inodeDir= readFirstInodeExt(fd)*readInodeSizeExt(fd);
   lseek(fd, inodeDir, SEEK_SET);
@@ -15,7 +16,12 @@ int trobarArxiuExt(int fd, const char *nomArxiu, unsigned int offset){
   char nom[255];
   int  directory_offset = 2048 + (i_block[0] -3)*readBlockSize(fd);
 
-  if (offset != 0)  directory_offset = offset;
+  if (offset != 0){
+    read_i_block(fd, offset, i_block);
+    int grup = (i_block[0] -1)/readBlocksGroup(fd);
+    int block = (i_block[0] -1) - (grup*readBlocksGroup(fd));
+    directory_offset = 1024 + grup*readBlockSize(fd)*readBlocksGroup(fd) + block*readBlockSize(fd);
+  }  //directory_offset = offset;
   counter = directory_offset;
   while(counter < (directory_offset + readInodeSizeExt(fd))){
     memset(nom, '\0', 255);
@@ -27,11 +33,16 @@ int trobarArxiuExt(int fd, const char *nomArxiu, unsigned int offset){
     if (llegirFileType(fd, counter) == 2) {
       if ((strcmp(nom, ".") != 0)&&(strcmp(nom, "..") != 0)&&(strcmp(nom,"lost+found") != 0)) {
         int inodeDest = llegirInode(fd, counter);
-        trobat = trobarArxiuExt(fd, nomArxiu, inodeDest);
+        trobat = trobarArxiuExt(fd, nomArxiu, inodeDest, delete);
       }
     }else if (llegirFileType(fd,counter) == 1){
       if (strcmp(nom, nomArxiu) == 0) {
-        printf("fitxer trobat. Ocupa %d\n", filesize);
+        if (delete) {
+          borrarArxiuExt(fd, counter, directory_offset, offset);
+          printf("El fitxer %s ha estat eliminat.\n", nom);
+        }else{
+          printf("fitxer trobat. Ocupa %d\n", filesize);
+        }
         return 1;
       }
     }
@@ -39,8 +50,9 @@ int trobarArxiuExt(int fd, const char *nomArxiu, unsigned int offset){
     counter += nextEntry;
 
   }
-      if ((offset == 0)&&(trobat)) {
-        printf("Error. Fitxer inexistent\n");
-      }
-      return 0;
+
+  if ((offset == 0)&&(!trobat)) {
+    printf("Error. Fitxer inexistent\n");
+  }
+  return 0;
 }
