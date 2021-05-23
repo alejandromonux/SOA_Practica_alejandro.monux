@@ -1,5 +1,33 @@
 #include "./ext2_info.h"
 
+int printExtInfo(int fd){
+  char name[16];
+  char lastMounted[256];
+  printf("INFO INODE\n");
+  printf("Mida Inode:     %d\n",       readInodeSizeExt(fd));
+  printf("Num Inodes:     %d\n",       readInodeCount(fd));
+  printf("Primer Inode:   %d\n",       readFirstInodeExt(fd));
+  printf("Inodes Grup:    %d\n",       readInodeGroups(fd));
+  printf("Inodes Lliures: %d\n\n",     readFreeInodes(fd));
+
+  printf("INFO BLOC\n");
+  printf("Mida Bloc:        %u\n",    readBlockSize(fd));
+  printf("Blocs Reservats:  %d\n",    readReservedBlocks(fd));
+  printf("Blocs Lliures:    %d\n",    readFreeBlocks(fd));
+  printf("Total Blocs:      %d\n",    readTotalBlocks(fd));
+  printf("Primer Bloc:      %d\n",    readFirstBlock(fd));
+  printf("Blocs Grup:       %d\n",    readBlocksGroup(fd));
+  printf("Frags Grup:       %d\n\n",  readFragsGroup(fd));
+
+  printf("INFO VOLUM\n");
+  printf("Nom volum:            %s\n", readBlockName(fd, name));
+  printf("Ultima Comprov:     %s\n", readLastWritten(fd, lastMounted));
+  printf("Ultim Muntatge:     %s\n", readLastMounted(fd, lastMounted));
+  printf("Ultima Escriptura:  %s\n", readLastWritten(fd, lastMounted));
+
+  return 0;
+}
+
 /* FILETYPE */
 
 /**
@@ -450,13 +478,15 @@ int llegirInode(int fd, int offset){
     aux=1024 + (readBG_INODE_TABLE_Ext(fd) - 1)*readBlockSize(fd) + (aux-1)*readInodeSizeExt(fd) +  grup*(readBlockSize(fd)*readBlocksGroup(fd));
   }
 
-  int i_block[15];
   int offset_Al_Inode_Table = aux;
-  read_i_block(fd, offset_Al_Inode_Table, i_block);
+  /*
+  int i_block[15];
+  read_i_block(fd, offset, i_block);
   grup = (i_block[0] -1)/readBlocksGroup(fd);
   int block = (i_block[0] -1) - (grup*readBlocksGroup(fd));
   int directory_offset = 1024 + grup*readBlockSize(fd)*readBlocksGroup(fd) + block*readBlockSize(fd);
-  return directory_offset;
+  return directory_offset;*/
+  return offset_Al_Inode_Table;
 }
 
 /*  VOLUME INFO */
